@@ -44,7 +44,7 @@ const paintings = [
   .gallery-slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
   .gallery-slide.active { opacity: 1; pointer-events: auto; }
   .gallery-slide img { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; }
-  .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.4s ease, background 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 52px; height: 52px; border-radius: 50%; border: none; background: rgba(0,0,0,0.06); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: var(--color-text); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.4s ease, background 0.2s ease; }
   .gallery-arrow.hidden { opacity: 0; pointer-events: none; }
   .gallery-arrow:hover { background: var(--color-code-bg); }
   .arrow-left { left: 20px; } .arrow-right { right: 20px; }
