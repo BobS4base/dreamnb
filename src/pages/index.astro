@@ -96,10 +96,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--color-accent);
   }
 
-  /* 响应式：小屏幕时隐藏两侧动图 */
+  /* 手机：动图改为横向排列，图片缩小 */
   @media (max-width: 860px) {
+    .home-layout {
+      flex-direction: column;
+      align-items: center;
+    }
     .side-gifs {
-      display: none;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .side-gifs img {
+      width: 48px;
+      height: 48px;
+    }
+    .left-gifs {
+      order: -1;
+    }
+    .right-gifs {
+      order: 1;
+    }
+    .center-content {
+      order: 0;
+      max-width: 100%;
     }
   }
 </style>
