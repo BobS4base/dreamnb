@@ -1,13 +1,31 @@
 /* ========== CSS 变量 & 主题 ========== */
 :root {
-  --color-bg: #ffffff;
-  --color-bg-card: #ffffff;
-  --color-bg-muted: #f5f5f5;
+  /* 背景 */
+  --bg-image: url('/uploads/images/bg.jpg');
+  --bg-overlay: rgba(255, 255, 255, 0.6);
+  --bg-overlay-dark: rgba(15, 23, 42, 0.7);
+  --color-bg: #f0f2f5;
+
+  /* 玻璃卡片 */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-blur: 16px;
+
+  /* 文字 */
   --color-text: #1a1a2e;
-  --color-text-muted: #6b7280;
-  --color-border: #e5e7eb;
+  --color-text-muted: #5a6a7a;
+  --color-text-glass: rgba(26, 26, 46, 0.8);
+
+  /* 强调 */
   --color-accent: #2563eb;
+  --color-accent-glass: rgba(37, 99, 235, 0.15);
   --color-accent-hover: #1d4ed8;
+
+  /* 边框 */
+  --color-border: rgba(0, 0, 0, 0.08);
+
+  /* 字体 */
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial,
     sans-serif;
@@ -17,14 +35,17 @@
 /* 暗色模式 */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0f172a;
-    --color-bg-card: #1e293b;
-    --color-bg-muted: #1e293b;
+    --bg-overlay: var(--bg-overlay-dark);
+    --glass-bg: rgba(30, 41, 59, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     --color-text: #f1f5f9;
     --color-text-muted: #94a3b8;
-    --color-border: #334155;
+    --color-text-glass: rgba(241, 245, 249, 0.85);
     --color-accent: #60a5fa;
+    --color-accent-glass: rgba(96, 165, 250, 0.15);
     --color-accent-hover: #93c5fd;
+    --color-border: rgba(255, 255, 255, 0.06);
   }
 }
 
@@ -45,11 +66,37 @@ html {
 body {
   font-family: var(--font-sans);
   background: var(--color-bg);
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--color-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background 0.3s, color 0.3s;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 背景叠加层 — 确保内容可读 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 所有内容在叠加层之上 */
+.layout,
+.main,
+.header,
+.footer {
+  position: relative;
+  z-index: 1;
 }
 
 img {
@@ -67,6 +114,63 @@ a:hover {
   color: var(--color-accent-hover);
 }
 
+/* ========== 玻璃卡片（Win7 Aero 风格） ========== */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.glass:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 窗口标题栏风格（Win7 样式） */
+.glass-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--glass-border);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border-radius: 12px 12px 0 0;
+  user-select: none;
+}
+
+.glass-titlebar .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.glass-titlebar .dot-red { background: #ff5f56; }
+.glass-titlebar .dot-yellow { background: #ffbd2e; }
+.glass-titlebar .dot-green { background: #27c93f; }
+
+.glass-titlebar .title-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-glass);
+  margin-left: 0.4rem;
+  letter-spacing: 0.02em;
+}
+
+.glass-body {
+  padding: 1rem;
+}
+
 /* ========== 滚动条美化 ========== */
 ::-webkit-scrollbar {
   width: 8px;
@@ -77,12 +181,12 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: rgba(0, 0, 0, 0.25);
 }
 
 /* ========== 选择文本颜色 ========== */
@@ -91,8 +195,19 @@ a:hover {
   color: #fff;
 }
 
+/* ========== 页码为空时 ========== */
+.empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 2rem 0;
+  font-size: 0.95rem;
+}
+
 /* ========== 打印样式 ========== */
 @media print {
+  body::before {
+    display: none;
+  }
   .header,
   .footer {
     display: none;
