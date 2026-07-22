@@ -109,8 +109,10 @@ const videos = [
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
+    border: none;
+    background: rgba(0,0,0,0.06);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     color: var(--color-text);
     cursor: pointer;
     display: flex;
@@ -118,7 +120,6 @@ const videos = [
     justify-content: center;
     opacity: 1;
     transition: opacity 0.4s ease, background 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
 
   .video-arrow.hidden { opacity: 0; pointer-events: none; }
@@ -196,10 +197,25 @@ const videos = [
   var cur = 0;
   var timer = null;
 
+  // 保存每个 iframe 的原始 src
+  var iframes = [];
+  for (var j = 0; j < slides.length; j++) {
+    var iframe = slides[j].querySelector('iframe');
+    iframes.push(iframe);
+    iframe.setAttribute('data-src', iframe.src);
+  }
+
   function show(i) {
     for (var j = 0; j < slides.length; j++) {
-      if (j === i) slides[j].classList.add('active');
-      else slides[j].classList.remove('active');
+      if (j === i) {
+        slides[j].classList.add('active');
+        // 恢复当前视频的 src
+        iframes[j].src = iframes[j].getAttribute('data-src');
+      } else {
+        slides[j].classList.remove('active');
+        // 停止非当前视频：清空 src 以停止播放
+        iframes[j].src = '';
+      }
     }
     counter.textContent = (i + 1) + ' / ' + slides.length;
     caption.textContent = captions[i];
