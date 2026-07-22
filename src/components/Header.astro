@@ -2,7 +2,6 @@
 const paths = [
   { href: '/', label: '首页' },
   { href: '/blog', label: '博客' },
-  { href: '/guestbook', label: '留言板' },
   { href: '/about', label: '关于' },
 ];
 ---
@@ -10,11 +9,14 @@ const paths = [
 <header class="header">
   <nav class="nav">
     <a href="/" class="logo">dreamnb<span class="logo-suffix"> 有梦想，就是牛逼</span></a>
-    <ul class="nav-links">
-      {paths.map(p => (
-        <li><a href={p.href} class="nav-link">{p.label}</a></li>
-      ))}
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        {paths.map(p => (
+          <li><a href={p.href} class="nav-link">{p.label}</a></li>
+        ))}
+      </ul>
+      <a href="/admin" class="write-btn" title="写博客">✏️ 写博客</a>
+    </div>
   </nav>
 </header>
 
@@ -52,6 +54,12 @@ const paths = [
     color: var(--color-text-muted);
   }
 
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .nav-links {
     display: flex;
     gap: 0.25rem;
@@ -73,6 +81,25 @@ const paths = [
   .nav-link:hover {
     color: var(--color-text);
     background: var(--color-code-bg);
+    text-decoration: none;
+  }
+
+  .write-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--color-accent);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .write-btn:hover {
+    background: var(--color-accent-hover);
     text-decoration: none;
   }
 </style>
