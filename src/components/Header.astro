@@ -2,7 +2,8 @@
   <nav class="nav">
     <a href="/" class="logo">dreamnb<span class="logo-suffix"> 有梦想，就是nb</span></a>
     <div class="nav-right">
-      <a href="/gallery" class="gallery-btn">作品欣赏</a>
+      <a href="/gallery" class="nav-btn">作品欣赏</a>
+      <a href="/video" class="nav-btn">视频欣赏</a>
     </div>
   </nav>
 </header>
@@ -45,7 +46,12 @@
     flex-shrink: 0;
   }
 
-  .gallery-btn {
+  .nav-right {
+    display: flex;
+    gap: 8px;
+  }
+
+  .nav-btn {
     display: inline-block;
     padding: 6px 16px;
     font-size: 0.85rem;
@@ -57,7 +63,7 @@
     transition: all 0.2s ease;
   }
 
-  .gallery-btn:hover {
+  .nav-btn:hover {
     color: #fff;
     background: var(--color-accent);
     text-decoration: none;

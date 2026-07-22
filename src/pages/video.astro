@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="视频欣赏">
+  <div class="video-page">
+    <h1 class="video-title">🎬 视频欣赏</h1>
+    <div class="video-wrapper">
+      <iframe
+        src="//player.bilibili.com/player.html?bvid=BV12E411t7Re&page=1&autoplay=0&high_quality=1"
+        allowfullscreen="allowfullscreen"
+        width="100%"
+        height="100%"
+        frameborder="0"
+        sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts allow-popups"
+      ></iframe>
+    </div>
+    <p class="video-caption">Alan Walker - Faded (MV · 中英字幕)</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .video-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .video-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 1.5rem;
+    text-align: center;
+  }
+
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .video-caption {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 1rem 0 0;
+  }
+</style>
