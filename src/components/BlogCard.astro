@@ -9,27 +9,27 @@ const { post } = Astro.props;
 const { title, description, pubDate, coverImage, tags } = post.data;
 ---
 
-<article class="blog-card glass">
-  <a href={`/blog/${post.slug}`} class="card-link">
+<article class="post-entry glass">
+  <a href={`/blog/${post.slug}`} class="post-entry-link">
     {coverImage && (
-      <div class="card-image">
+      <div class="post-entry-cover">
         <img src={coverImage} alt={title} loading="lazy" />
       </div>
     )}
-    <div class="card-body">
-      <h2 class="card-title">{title}</h2>
-      <p class="card-desc">{description}</p>
-      <div class="card-meta">
-        <time datetime={pubDate.toISOString()}>
+    <div class="post-entry-body">
+      <h2 class="post-entry-title">{title}</h2>
+      {description && <p class="post-entry-excerpt">{description}</p>}
+      <div class="post-entry-meta">
+        <time class="post-entry-date" datetime={pubDate.toISOString()}>
           {pubDate.toLocaleDateString('zh-CN', {
             year: 'numeric',
-            month: 'short',
+            month: 'long',
             day: 'numeric',
           })}
         </time>
         {tags.length > 0 && (
-          <span class="card-tags">
-            {tags.map(t => <span class="card-tag">{t}</span>)}
+          <span class="post-entry-tags">
+            {tags.map(t => <span class="post-entry-tag">{t}</span>)}
           </span>
         )}
       </div>
@@ -38,83 +38,87 @@ const { title, description, pubDate, coverImage, tags } = post.data;
 </article>
 
 <style>
-  .blog-card {
+  .post-entry {
     overflow: hidden;
     padding: 0;
-    border-radius: 10px;
+    border-radius: 12px;
   }
 
-  .blog-card:hover {
+  .post-entry:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
 
-  .card-link {
+  .post-entry-link {
     text-decoration: none;
     color: inherit;
     display: block;
   }
 
-  .card-image {
+  .post-entry-cover {
     aspect-ratio: 16 / 9;
     overflow: hidden;
   }
 
-  .card-image img {
+  .post-entry-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s;
   }
 
-  .blog-card:hover .card-image img {
+  .post-entry:hover .post-entry-cover img {
     transform: scale(1.05);
   }
 
-  .card-body {
-    padding: 0.9rem 1rem 1rem;
+  .post-entry-body {
+    padding: 1.25rem 1.5rem 1.5rem;
   }
 
-  .card-title {
-    font-size: 1rem;
+  .post-entry-title {
+    font-size: 1.15rem;
     font-weight: 600;
-    margin: 0 0 0.35rem;
     color: var(--color-text-glass);
+    margin: 0 0 0.4rem;
     line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
-  .card-desc {
-    font-size: 0.85rem;
+  .post-entry:hover .post-entry-title {
+    color: var(--color-accent);
+  }
+
+  .post-entry-excerpt {
+    font-size: 0.9rem;
     color: var(--color-text-muted);
     margin: 0 0 0.6rem;
-    line-height: 1.5;
+    line-height: 1.6;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .card-meta {
+  .post-entry-meta {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.5rem;
     font-size: 0.78rem;
     color: var(--color-text-muted);
   }
 
-  .card-tags {
+  .post-entry-date {
+    white-space: nowrap;
+  }
+
+  .post-entry-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.3rem;
   }
 
-  .card-tag {
+  .post-entry-tag {
     padding: 0.1rem 0.5rem;
     background: var(--color-accent-glass);
     border-radius: 4px;

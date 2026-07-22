@@ -3,108 +3,136 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="关于" description="关于海绵宝宝">
-  <div class="about-container">
-    <div class="about-card glass">
-      <div class="glass-titlebar">
-        <span class="dot dot-red"></span>
-        <span class="dot dot-yellow"></span>
-        <span class="dot dot-green"></span>
-        <span class="title-text">👋 关于我</span>
-      </div>
-      <div class="glass-body about-body">
-        <p class="about-greeting">你好，我是 <strong>海绵宝宝</strong> 🧽</p>
-
-        <div class="about-links">
+  <div class="about-wrap">
+    <!-- QQ空间风格 — 个人封面（小尺寸） -->
+    <div class="about-cover glass">
+      <img
+        class="about-cover-img"
+        src="/uploads/images/bg.jpg"
+        alt="封面"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      />
+      <div class="about-cover-overlay"></div>
+      <div class="about-info">
+        <div class="about-avatar">
+          <img
+            src="https://q1.qlogo.cn/g?b=qq&nk=310821993&s=640"
+            alt="头像"
+          />
+        </div>
+        <div class="about-text">
+          <h1 class="about-name">海绵宝宝 🧽</h1>
+          <p class="about-sig">有梦想，就是牛逼</p>
         </div>
       </div>
+    </div>
+
+    <!-- 个人简介卡片 -->
+    <div class="about-bio glass">
+      <p>你好，我是 <strong>海绵宝宝</strong>，这是我在互联网上的小窝。</p>
+      <p>这里记录着我的生活随笔、学习笔记和各种胡思乱想。</p>
     </div>
   </div>
 </BaseLayout>
 
 <style>
-  .about-container {
+  .about-wrap {
+    max-width: 600px;
+    margin: 0 auto;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .about-card {
-    width: 100%;
-    max-width: 480px;
+  .about-cover {
+    position: relative;
+    height: 240px;
+    border-radius: 16px;
     overflow: hidden;
   }
 
-  .about-body {
-    padding: 2rem;
-    text-align: center;
+  .about-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
-  .about-greeting {
-    font-size: 1.3rem;
-    color: var(--color-text-glass);
-    margin: 0 0 2rem;
-    line-height: 1.6;
+  .about-cover-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
   }
 
-  .about-greeting strong {
-    color: var(--color-accent);
-    font-size: 1.5rem;
-  }
-
-  .about-links {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .about-link {
+  .about-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 1.75rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.9rem 1.25rem;
-    border-radius: 10px;
-    text-decoration: none;
-    color: var(--color-text-glass);
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: all 0.2s;
+    gap: 1rem;
   }
 
-  .about-link:hover {
-    transform: translateX(4px);
-    background: var(--color-accent-glass);
-    border-color: var(--color-accent);
+  .about-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #fff;
   }
 
-  .link-icon {
-    font-size: 1.4rem;
-    width: 2rem;
-    text-align: center;
+  .about-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .link-text {
+  .about-text {
     flex: 1;
-    font-size: 1rem;
-    font-weight: 500;
-    text-align: left;
   }
 
-  .link-arrow {
-    font-size: 1.1rem;
-    color: var(--color-text-muted);
-    transition: transform 0.2s;
+  .about-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin: 0 0 0.15rem;
   }
 
-  .about-link:hover .link-arrow {
-    transform: translateX(3px);
+  .about-sig {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    margin: 0;
   }
 
-  @media (max-width: 480px) {
-    .about-body {
-      padding: 1.5rem;
-    }
+  .about-bio {
+    padding: 1.5rem 1.75rem;
+    border-radius: 12px;
+    line-height: 1.8;
+    color: var(--color-text-glass);
+    font-size: 0.95rem;
+  }
+
+  .about-bio p {
+    margin: 0 0 0.5rem;
+  }
+
+  .about-bio p:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-bio strong {
+    color: var(--color-accent);
   }
 </style>
