@@ -2,8 +2,8 @@
 
 backend:
   name: github
-  repo: 你的GitHub用户名/你的仓库名  # ⚠️ 改为你的 GitHub 仓库地址
-  branch: main
+  repo: BobS4base/dreamnb
+  branch: master
   site_domain: dreamnb.com
 
 media_folder: public/uploads/images
