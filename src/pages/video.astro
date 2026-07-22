@@ -45,6 +45,7 @@ const videos = [
       </div>
       <div class="video-info" id="info">
         <p class="video-caption" id="caption">{videos[0].caption}</p>
+        <p class="video-copyright">&copy; SpongeBob All Rights Reserved</p>
       </div>
     </div>
   </div>
@@ -158,12 +159,20 @@ const videos = [
     margin: 0;
   }
 
+  .video-copyright {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin: 8px 0 0;
+    opacity: 0.6;
+  }
+
   @media (max-width: 768px) {
     .video-arrow { width: 42px; height: 42px; }
     .video-arrow svg { width: 22px; height: 22px; }
-    .arrow-left { left: 4px; }
-    .arrow-right { right: 4px; }
+    .arrow-left { left: 10px; }
+    .arrow-right { right: 10px; }
     .video-counter { bottom: 12px; }
+    .video-copyright { font-size: 0.65rem; }
   }
 </style>
 
