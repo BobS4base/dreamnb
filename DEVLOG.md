@@ -112,6 +112,13 @@
 
 ---
 
+## 2026-07-23 首页视频更换为 BV1yXLA6tE9g
+
+- 首页嵌入的视频从 `BV1NvNK6GEuG` 换为 `BV1yXLA6tE9g`
+- 如需解析 B站 4K 视频源文件，可用 `you-get` 工具下载
+
+---
+
 ## 写新文章流程
 
 1. 在 `src/content/blog/` 下新建 `.md` 文件
