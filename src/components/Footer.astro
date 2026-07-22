@@ -4,9 +4,9 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
   <div class="footer-inner">
-    <p class="copyright">&copy; {year} dreamnb. All rights reserved.</p>
+    <p class="copyright">&copy; {year} dreamnb</p>
     <div class="footer-links">
-      <a href="/rss.xml" target="_blank" class="footer-link">RSS</a>
+      <a href="/rss.xml" class="footer-link">RSS</a>
     </div>
   </div>
 </footer>
@@ -22,9 +22,9 @@ const year = new Date().getFullYear();
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 960px;
+    max-width: var(--content-width);
     margin: 0 auto;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--color-text-muted);
   }
 
@@ -44,13 +44,5 @@ const year = new Date().getFullYear();
 
   .footer-link:hover {
     color: var(--color-accent);
-  }
-
-  @media (max-width: 480px) {
-    .footer-inner {
-      flex-direction: column;
-      gap: 0.5rem;
-      text-align: center;
-    }
   }
 </style>

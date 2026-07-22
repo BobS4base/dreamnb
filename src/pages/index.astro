@@ -4,82 +4,30 @@ import { getCollection } from 'astro:content';
 
 const blogPosts = await getCollection('blog');
 blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
-const postCount = blogPosts.length;
 ---
 
-<BaseLayout title="首页" description="dreamnb 有梦想，就是牛逼">
-  <!-- QQ空间风格 — 个人封面 -->
-  <div class="profile-cover glass">
-    <img
-      class="profile-cover-img"
-      src="/uploads/images/bg.jpg"
-      alt="封面"
-      loading="lazy"
-      onerror="this.style.display='none'"
-    />
-    <div class="profile-cover-overlay"></div>
-    <div class="profile-info">
-      <div class="profile-avatar">
-        <img
-          src="https://q1.qlogo.cn/g?b=qq&nk=310821993&s=640"
-          alt="头像"
-        />
-      </div>
-      <div class="profile-text">
-        <h1 class="profile-name">dreamnb</h1>
-        <p class="profile-sig">有梦想，就是牛逼</p>
-      </div>
-      <div class="profile-stats">
-        <div class="profile-stat">
-          <span class="profile-stat-num">{postCount}</span>
-          <span class="profile-stat-label">文章</span>
-        </div>
-        <div class="profile-stat">
-          <span class="profile-stat-num">🐙</span>
-          <span class="profile-stat-label">GitHub</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<BaseLayout title="dreamnb" description="dreamnb 的个人博客">
+  <h1 class="page-title">博客</h1>
 
-  <!-- WordPress 风格 — 博客文章列表 -->
-  <section class="post-feed" style="margin-top: 1.5rem;">
-    {postCount > 0 ? (
-      blogPosts.map(post => {
-        const { title, description, pubDate, tags } = post.data;
+  {blogPosts.length > 0 ? (
+    <div class="blog-list">
+      {blogPosts.map(post => {
+        const { title, pubDate } = post.data;
         return (
-          <a href={`/blog/${post.slug}`} class="post-entry glass">
-            <h2 class="post-entry-title">{title}</h2>
-            {description && <p class="post-entry-excerpt">{description}</p>}
-            <div class="post-entry-meta">
-              <time class="post-entry-date" datetime={pubDate.toISOString()}>
-                {pubDate.toLocaleDateString('zh-CN', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </time>
-              {tags.length > 0 && (
-                <span class="post-entry-tags">
-                  {tags.map(t => <span class="post-entry-tag">{t}</span>)}
-                </span>
-              )}
-            </div>
+          <a href={`/blog/${post.slug}`} class="blog-item">
+            <time class="blog-item-date" datetime={pubDate.toISOString()}>
+              {pubDate.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              })}
+            </time>
+            <span class="blog-item-title">{title}</span>
           </a>
         );
-      })
-    ) : (
-      <p class="empty">还没有文章，敬请期待。</p>
-    )}
-  </section>
+      })}
+    </div>
+  ) : (
+    <p class="empty">还没有文章，敬请期待。</p>
+  )}
 </BaseLayout>
-
-<style>
-  .post-feed {
-    max-width: 720px;
-    margin: 1.5rem auto 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-</style>

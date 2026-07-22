@@ -6,123 +6,96 @@ export interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, pubDate, coverImage, tags } = post.data;
+const { title, description, pubDate, tags } = post.data;
 ---
 
-<article class="post-entry glass">
-  <a href={`/blog/${post.slug}`} class="post-entry-link">
-    {coverImage && (
-      <div class="post-entry-cover">
-        <img src={coverImage} alt={title} loading="lazy" />
-      </div>
-    )}
-    <div class="post-entry-body">
-      <h2 class="post-entry-title">{title}</h2>
-      {description && <p class="post-entry-excerpt">{description}</p>}
-      <div class="post-entry-meta">
-        <time class="post-entry-date" datetime={pubDate.toISOString()}>
-          {pubDate.toLocaleDateString('zh-CN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </time>
-        {tags.length > 0 && (
-          <span class="post-entry-tags">
-            {tags.map(t => <span class="post-entry-tag">{t}</span>)}
-          </span>
-        )}
-      </div>
+<article class="blog-card">
+  <a href={`/blog/${post.slug}`} class="blog-card-link">
+    <time class="blog-card-date" datetime={pubDate.toISOString()}>
+      {pubDate.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })}
+    </time>
+    <div class="blog-card-info">
+      <h2 class="blog-card-title">{title}</h2>
+      {description && <p class="blog-card-desc">{description}</p>}
+      {tags.length > 0 && (
+        <div class="blog-card-tags">
+          {tags.map(t => <span class="blog-card-tag">{t}</span>)}
+        </div>
+      )}
     </div>
   </a>
 </article>
 
 <style>
-  .post-entry {
-    overflow: hidden;
-    padding: 0;
-    border-radius: 12px;
+  .blog-card {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .post-entry:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  .blog-card:last-child {
+    border-bottom: none;
   }
 
-  .post-entry-link {
+  .blog-card-link {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
     text-decoration: none;
     color: inherit;
-    display: block;
   }
 
-  .post-entry-cover {
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
+  .blog-card-date {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 7em;
   }
 
-  .post-entry-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
+  .blog-card-info {
+    flex: 1;
+    min-width: 0;
   }
 
-  .post-entry:hover .post-entry-cover img {
-    transform: scale(1.05);
+  .blog-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin: 0;
   }
 
-  .post-entry-body {
-    padding: 1.25rem 1.5rem 1.5rem;
-  }
-
-  .post-entry-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--color-text-glass);
-    margin: 0 0 0.4rem;
-    line-height: 1.4;
-  }
-
-  .post-entry:hover .post-entry-title {
+  .blog-card-link:hover .blog-card-title {
     color: var(--color-accent);
   }
 
-  .post-entry-excerpt {
-    font-size: 0.9rem;
+  .blog-card-desc {
+    font-size: 0.85rem;
     color: var(--color-text-muted);
-    margin: 0 0 0.6rem;
-    line-height: 1.6;
+    margin: 0.25rem 0 0;
+    line-height: 1.5;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .post-entry-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    font-size: 0.78rem;
-    color: var(--color-text-muted);
-  }
-
-  .post-entry-date {
-    white-space: nowrap;
-  }
-
-  .post-entry-tags {
+  .blog-card-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.3rem;
+    margin-top: 0.3rem;
   }
 
-  .post-entry-tag {
-    padding: 0.1rem 0.5rem;
-    background: var(--color-accent-glass);
-    border-radius: 4px;
+  .blog-card-tag {
     font-size: 0.72rem;
-    color: var(--color-accent);
+    padding: 0.05rem 0.4rem;
+    background: var(--color-code-bg);
+    border-radius: 3px;
+    color: var(--color-text-muted);
   }
 </style>
