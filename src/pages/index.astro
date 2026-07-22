@@ -3,31 +3,89 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="dreamnb" description="dreamnb 有梦想，就是nb">
-  <div class="profile" style="border-bottom: none; margin-bottom: 1.5rem;">
-    <div class="profile-avatar">
-      <img
-        src="https://gif-avatars.com/img/150x150/spongebob.gif"
-        alt="海绵宝宝头像"
-        loading="lazy"
-      />
+  <div class="home-layout">
+    <!-- 左侧：8个海绵宝宝动图 -->
+    <div class="side-gifs left-gifs">
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-018540.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-025228.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-032709.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-125557.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-263196.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-386791.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-408782.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-467939.gif" alt="海绵宝宝" loading="lazy" />
     </div>
-    <div class="profile-info">
-      <h1 class="profile-name">海绵宝宝 🧽</h1>
-      <p class="profile-sig">有梦想，就是nb</p>
+
+    <!-- 中间：主要内容 -->
+    <div class="center-content">
+      <div class="profile" style="border-bottom: none; margin-bottom: 1.5rem;">
+        <div class="profile-avatar">
+          <img
+            src="https://gif-avatars.com/img/150x150/spongebob.gif"
+            alt="海绵宝宝头像"
+            loading="lazy"
+          />
+        </div>
+        <div class="profile-info">
+          <h1 class="profile-name">海绵宝宝 🧽</h1>
+          <p class="profile-sig">有梦想，就是nb</p>
+        </div>
+      </div>
+
+      <article class="about">
+        <p>你好，我是 <strong>海绵宝宝</strong>，这是我的个人网站。</p>
+        <p>这里记录生活随笔、学习笔记和各种胡思乱想。</p>
+        <p>
+          网站源码托管在 <a href="https://github.com/BobS4base/dreamnb" target="_blank" rel="noopener">GitHub</a>，
+          通过 Cloudflare Pages 自动部署。
+        </p>
+      </article>
+    </div>
+
+    <!-- 右侧：8个海绵宝宝动图 -->
+    <div class="side-gifs right-gifs">
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-580697.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-609314.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-686470.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-734323.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-771732.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-882870.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://www.picgifs.com/avatars/cartoons/spongebob/avatars-spongebob-893522.gif" alt="海绵宝宝" loading="lazy" />
+      <img src="https://gif-avatars.com/img/150x150/spongebob-dance.gif" alt="海绵宝宝跳舞" loading="lazy" />
     </div>
   </div>
-
-  <article class="about">
-    <p>你好，我是 <strong>海绵宝宝</strong>，这是我的个人网站。</p>
-    <p>这里记录生活随笔、学习笔记和各种胡思乱想。</p>
-    <p>
-      网站源码托管在 <a href="https://github.com/BobS4base/dreamnb" target="_blank" rel="noopener">GitHub</a>，
-      通过 Cloudflare Pages 自动部署。
-    </p>
-  </article>
 </BaseLayout>
 
 <style>
+  .home-layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .side-gifs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .side-gifs img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+    background: var(--color-code-bg);
+  }
+
+  .center-content {
+    flex: 1;
+    min-width: 0;
+    max-width: 480px;
+  }
+
   .about p {
     margin: 0 0 1rem;
     line-height: 1.8;
@@ -36,5 +94,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .about strong {
     color: var(--color-accent);
+  }
+
+  /* 响应式：小屏幕时隐藏两侧动图 */
+  @media (max-width: 860px) {
+    .side-gifs {
+      display: none;
+    }
   }
 </style>
