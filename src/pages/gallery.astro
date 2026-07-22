@@ -31,6 +31,7 @@ const paintings = [
         <h2 class="info-title" id="infoTitle">{paintings[0].title}</h2>
         <p class="info-detail" id="infoDetail">{paintings[0].artist} · {paintings[0].year}</p>
         <p class="info-location" id="infoLocation">{paintings[0].location}</p>
+        <p class="info-copyright">&copy; SpongeBob All Rights Reserved</p>
       </div>
     </div>
   </div>
@@ -54,6 +55,7 @@ const paintings = [
   .info-title { font-size: 1.15rem; font-weight: 600; color: var(--color-text); margin: 0 0 4px; }
   .info-detail { font-size: 0.9rem; color: var(--color-text-muted); margin: 0 0 2px; }
   .info-location { font-size: 0.8rem; color: var(--color-text-muted); margin: 0; }
+  .info-copyright { font-size: 0.7rem; color: var(--color-text-muted); margin: 8px 0 0; opacity: 0.6; }
   @media (max-width: 768px) {
     .gallery-arrow { width: 42px; height: 42px; }
     .gallery-arrow svg { width: 22px; height: 22px; }
