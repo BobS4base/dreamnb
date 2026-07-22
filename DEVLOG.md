@@ -144,3 +144,66 @@
 ## 后台管理（Decap CMS）
 
 访问 `https://域名/admin`，用 GitHub 登录后可可视化编辑。
+
+---
+
+## 2026-07-23 全面改版：极简博客风格（参考 yinwang.org）
+
+### 设计变更
+- 去掉 QQ 空间 / WordPress 风格，改为纯白极简设计
+- 首页：文章列表只显示日期 + 标题（yinwang.org 风格）
+- 文章页：简洁阅读体验，专注内容
+- 全局样式：纯白背景，干净字体，无多余装饰
+
+### 改动的文件
+- `src/styles/global.css` — 完全重写，去掉玻璃效果，改为极简样式
+- `src/pages/index.astro` — 极简文章列表
+- `src/pages/about.astro` — 极简文本介绍
+- `src/components/Header.astro` — 简化导航
+- `src/components/Footer.astro` — 简化页脚
+- `src/components/BlogCard.astro` — 极简卡片
+- `src/layouts/BaseLayout.astro` — 调整布局
+- `src/layouts/PostLayout.astro` — 简化文章排版
+- `src/pages/blog/index.astro` — 简化博客列表页
+
+---
+
+## 2026-07-23 配置 Decap CMS 后台
+
+### 变更
+- 修复 `public/admin/config.yml`：填写仓库 `BobS4base/dreamnb`，分支 `master`
+- 创建 `public/admin/index.html`：Decap CMS 入口页面
+- 访问 `https://dreamnb.com/admin` 用 GitHub 登录即可在浏览器中写文章
+
+---
+
+## 2026-07-23 新增留言板功能
+
+### 功能说明
+- 任何人都可以留言，无需登录
+- 记录昵称、内容、时间、IP 地址
+- 单条留言最多 20000 字符
+- 分页加载历史记录
+
+### 新增文件
+- `functions/api/guestbook.ts` — Cloudflare Pages Function，处理留言 API
+- `src/pages/guestbook.astro` — 留言板页面（表单 + 历史记录）
+- `schema.sql` — D1 数据库建表语句
+- `wrangler.toml` — Cloudflare 配置
+
+### 修改文件
+- `src/components/Header.astro` — 导航栏新增"留言板"链接
+
+### 部署前置条件
+- 需在 Cloudflare 创建 D1 数据库并绑定到 Pages 项目
+- 详见 `schema.sql` 和 `wrangler.toml`
+
+---
+
+## 留言板部署步骤
+
+1. `npx wrangler login`
+2. `npx wrangler d1 create dreamnb-guestbook`
+3. `npx wrangler d1 execute dreamnb-guestbook --file=schema.sql`
+4. 在 Cloudflare Dashboard 中绑定 D1 数据库到 Pages 项目
+5. 重新部署即可
