@@ -1,0 +1,11 @@
+name = "dreamnb"
+pages_build_output_dir = "dist"
+
+# Cloudflare D1 数据库绑定
+# 使用前需先创建数据库：
+#   npx wrangler d1 create dreamnb-guestbook
+# 然后将 database_id 替换为实际 ID
+[[d1_databases]]
+binding = "DB"
+database_name = "dreamnb-guestbook"
+database_id = "your-database-id-here"
