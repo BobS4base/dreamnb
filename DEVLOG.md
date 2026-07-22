@@ -207,3 +207,32 @@
 3. `npx wrangler d1 execute dreamnb-guestbook --file=schema.sql`
 4. 在 Cloudflare Dashboard 中绑定 D1 数据库到 Pages 项目
 5. 重新部署即可
+
+---
+
+## 2026-07-23 全站大清理 + 首页改为个人简介
+
+### 删除了 12 个文件/目录
+- 博客相关：`blog/` 目录、`BlogCard.astro`、`PostLayout.astro`、`rss.xml.ts`、`content/config.ts`
+- 留言板：`guestbook.astro`、`functions/`、`schema.sql`
+- 后台管理：`public/admin/` 目录（config.yml + index.html）
+- 配置：`wrangler.toml`
+- 页面：`about.astro`（内容已移到首页）
+
+### 变更
+- 首页重写：海绵宝宝头像 + 个人简介 + 文字介绍（原关于页内容）
+- 导航栏：只保留 logo，去掉所有链接
+- 页脚：去掉 RSS 链接，只保留版权
+- 清理 `global.css`：从 342 行精简到 159 行
+
+---
+
+## 2026-07-23 标语修改 + 首页两侧加海绵宝宝动图
+
+### 标语
+- `有梦想，就是牛逼` → `有梦想，就是nb`
+
+### 首页布局
+- 三栏 flex 布局：左侧 8 个海绵宝宝动图 | 中间个人简介 | 右侧 8 个海绵宝宝动图
+- 共 16 个搞笑动图（来源：picgifs.com + gif-avatars.com）
+- 响应式：小屏幕自动隐藏两侧动图
