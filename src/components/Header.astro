@@ -9,7 +9,7 @@ const paths = [
 
 <header class="header">
   <nav class="nav">
-    <a href="/" class="logo">dreamnb</a>
+    <a href="/" class="logo">dreamnb<span class="logo-suffix">有梦想，就是牛逼</span></a>
     <button class="menu-toggle" id="menuToggle" aria-label="菜单">
       <span></span><span></span><span></span>
     </button>
@@ -61,6 +61,14 @@ const paths = [
 
   .logo:hover {
     opacity: 0.8;
+  }
+
+  .logo-suffix {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    margin-left: 0.4rem;
+    letter-spacing: 0.02em;
   }
 
   .nav-links {

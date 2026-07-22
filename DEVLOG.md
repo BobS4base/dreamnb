@@ -1,0 +1,94 @@
+# dreamnb 开发日志
+
+> 项目：个人博客与作品集网站
+> 框架：Astro
+> 托管：Cloudflare Pages
+> 域名：通过 Cloudflare 购买
+> 仓库：https://github.com/BobS4base/dreamnb
+
+---
+
+## 2026-07-23 首次搭建
+
+### 项目初始化
+- 创建项目目录 `D:/dreamnb`
+- 安装 Node.js
+- 使用 Astro 框架构建静态网站
+- 移除 `@astrojs/cloudflare` 适配器（静态站不需要）
+- 构建命令：`npm install && npm run build`
+
+### 网站结构
+| 路由 | 说明 |
+|------|------|
+| `/` | 首页（精选文章 + 精选作品，logo: dreamnb 有梦想，就是牛逼） |
+| `/blog` | 博客列表 |
+| `/blog/:slug` | 博客文章详情 |
+| `/portfolio` | 作品集列表 |
+| `/portfolio/:slug` | 作品详情 |
+| `/about` | 关于页 |
+| `/rss.xml` | RSS 订阅 |
+
+### 内容管理
+- 博客文章：`src/content/blog/*.md`
+- 作品集：`src/content/portfolio/*.md`
+- 后台：Decap CMS（`/admin` 路径，需配置 `public/admin/config.yml` 中的 `repo` 字段）
+
+### 视频
+- 使用 Bilibili 嵌入（通过 `VideoEmbed` 组件或直接写 iframe）
+- 示例：`<iframe src="//player.bilibili.com/player.html?bvid=BV号&page=1&autoplay=0&high_quality=1"></iframe>`
+
+### 图片
+- 上传到 `public/uploads/images/`
+- 文章中用 `/uploads/images/xxx.jpg` 引用
+
+### Git & 部署
+- Git 初始化并提交
+- 远程仓库：`https://github.com/BobS4base/dreamnb.git`
+- SSH 公钥已配置
+- Cloudflare Pages 已连接 GitHub，自动部署（推送到 `master` 分支即触发）
+
+### 构建验证
+- 6 个页面 + RSS 全部构建成功
+- 构建产物在 `dist/` 目录
+- 网站已通过 Cloudflare Pages 上线，域名已绑定
+
+### 常见问题
+- 国内访问 GitHub 不稳定，使用 SSH 方式推送
+- Git 代理配置（如需要）：`git config --global http.proxy http://127.0.0.1:7890`
+- 清除代理：`git config --global --unset http.proxy`
+- 构建命令在 PowerShell 中运行，bash 中可能找不到 npm
+
+---
+
+## 2026-07-23 修改 logo 标语
+
+- 首页左上角 logo 从 `dreamnb` 改为 `dreamnb 有梦想，就是牛逼`
+- 添加了 `.logo-suffix` 样式（小字、灰色）
+
+---
+
+## 写新文章流程
+
+1. 在 `src/content/blog/` 下新建 `.md` 文件
+2. 文件头格式：
+   ```yaml
+   ---
+   title: '文章标题'
+   description: '文章简介'
+   pubDate: 2026-07-23
+   tags: ['标签1', '标签2']
+   coverImage: '/uploads/images/xxx.jpg'
+   featured: true
+   ---
+   ```
+3. 正文写 Markdown
+4. `git add . && git commit -m "新文章: xxx" && git push`
+5. Cloudflare Pages 自动部署
+
+## 作品集新建流程
+
+同样，在 `src/content/portfolio/` 下新建 `.md` 文件，格式参考现有文件。
+
+## 后台管理（Decap CMS）
+
+访问 `https://域名/admin`，用 GitHub 登录后可可视化编辑。
