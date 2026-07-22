@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const paintings = [
+  { id: 1, title: 'The Persistence of Memory', artist: 'Salvador Dalí', year: '1931', location: 'Museum of Modern Art (MoMA), New York', image: '/uploads/images/gallery/01-persistence-of-memory.jpg' },
+  { id: 2, title: 'The Son of Man', artist: 'René Magritte', year: '1964', location: 'Private Collection', image: '/uploads/images/gallery/02-son-of-man.jpg' },
+  { id: 3, title: 'Golconda', artist: 'René Magritte', year: '1953', location: 'Menil Collection, Houston', image: '/uploads/images/gallery/03-golconda.jpg' },
+  { id: 4, title: 'Swans Reflecting Elephants', artist: 'Salvador Dalí', year: '1937', location: 'Private Collection', image: '/uploads/images/gallery/04-swans-reflecting-elephants.jpg' },
+  { id: 5, title: 'I and the Village', artist: 'Marc Chagall', year: '1911', location: 'Museum of Modern Art (MoMA), New York', image: '/uploads/images/gallery/05-i-and-the-village.jpg' },
+];
+---
+
+<BaseLayout title="作品欣赏">
+  <div class="gallery-page">
+    <div class="gallery-container" id="gallery">
+      <div class="gallery-viewport">
+        {paintings.map((p, i) => (
+          <div class="gallery-slide" data-index={i}>
+            <img src={p.image} alt={p.title} loading={i === 0 ? 'eager' : 'lazy'} />
+          </div>
+        ))}
+        <button class="gallery-arrow arrow-left" id="prevBtn" aria-label="上一张">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="gallery-arrow arrow-right" id="nextBtn" aria-label="下一张">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="gallery-counter" id="counter">1 / 5</div>
+      </div>
+      <div class="gallery-info" id="info">
+        <h2 class="info-title" id="infoTitle">{paintings[0].title}</h2>
+        <p class="info-detail" id="infoDetail">{paintings[0].artist} · {paintings[0].year}</p>
+        <p class="info-location" id="infoLocation">{paintings[0].location}</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .gallery-page { position: fixed; top: 56px; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; background: #000; z-index: 100; }
+  .gallery-container { flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  .gallery-viewport { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #0a0a0a; min-height: 0; }
+  .gallery-slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
+  .gallery-slide.active { opacity: 1; pointer-events: auto; }
+  .gallery-slide img { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; }
+  .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; width: 52px; height: 52px; border-radius: 50%; border: none; background: rgba(255,255,255,0.15); backdrop-filter: blur(6px); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.4s ease, background 0.2s ease; }
+  .gallery-arrow.hidden { opacity: 0; pointer-events: none; }
+  .gallery-arrow:hover { background: rgba(255,255,255,0.3); }
+  .arrow-left { left: 20px; } .arrow-right { right: 20px; }
+  .gallery-counter { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10; color: rgba(255,255,255,0.7); font-size: 0.85rem; font-family: var(--font-mono); background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); padding: 4px 14px; border-radius: 20px; opacity: 1; transition: opacity 0.4s ease; }
+  .gallery-counter.hidden { opacity: 0; }
+  .gallery-info { flex-shrink: 0; padding: 16px 24px 20px; background: #111; color: #ddd; text-align: center; border-top: 1px solid #222; opacity: 1; transition: opacity 0.4s ease; }
+  .gallery-info.hidden { opacity: 0; }
+  .info-title { font-size: 1.15rem; font-weight: 600; color: #fff; margin: 0 0 4px; }
+  .info-detail { font-size: 0.9rem; color: #aaa; margin: 0 0 2px; }
+  .info-location { font-size: 0.8rem; color: #777; margin: 0; }
+  @media (max-width: 768px) {
+    .gallery-arrow { width: 42px; height: 42px; }
+    .gallery-arrow svg { width: 22px; height: 22px; }
+    .arrow-left { left: 10px; } .arrow-right { right: 10px; }
+    .gallery-info { padding: 12px 16px 16px; }
+    .info-title { font-size: 1rem; } .info-detail { font-size: 0.8rem; } .info-location { font-size: 0.75rem; }
+  }
+</style>
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('.gallery-slide');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var counter = document.getElementById('counter');
+  var infoTitle = document.getElementById('infoTitle');
+  var infoDetail = document.getElementById('infoDetail');
+  var infoLocation = document.getElementById('infoLocation');
+  var infoBox = document.querySelector('.gallery-info');
+  var counterEl = document.querySelector('.gallery-counter');
+
+  var data = [
+    { t: 'The Persistence of Memory · 记忆的永恒', a: 'Salvador Dalí', y: '1931', l: 'Museum of Modern Art (MoMA), New York' },
+    { t: 'The Son of Man · 人类之子', a: 'René Magritte', y: '1964', l: 'Private Collection' },
+    { t: 'Golconda · 戈尔康达', a: 'René Magritte', y: '1953', l: 'Menil Collection, Houston' },
+    { t: 'Swans Reflecting Elephants · 天鹅映象', a: 'Salvador Dalí', y: '1937', l: 'Private Collection' },
+    { t: 'I and the Village · 我与村庄', a: 'Marc Chagall', y: '1911', l: 'Museum of Modern Art (MoMA), New York' },
+  ];
+
+  var cur = 0;
+  var timer = null;
+
+  function show(i) {
+    for (var j = 0; j < slides.length; j++) {
+      if (j === i) slides[j].classList.add('active');
+      else slides[j].classList.remove('active');
+    }
+    counter.textContent = (i + 1) + ' / ' + data.length;
+    infoTitle.textContent = data[i].t;
+    infoDetail.textContent = data[i].a + ' · ' + data[i].y;
+    infoLocation.textContent = data[i].l;
+  }
+
+  function nextSlide() { cur = (cur + 1) % data.length; show(cur); resetTimer(); }
+  function prevSlide() { cur = (cur - 1 + data.length) % data.length; show(cur); resetTimer(); }
+
+  function showUI() {
+    var arrows = document.querySelectorAll('.gallery-arrow');
+    for (var j = 0; j < arrows.length; j++) arrows[j].classList.remove('hidden');
+    infoBox.classList.remove('hidden');
+    counterEl.classList.remove('hidden');
+  }
+  function hideUI() {
+    var arrows = document.querySelectorAll('.gallery-arrow');
+    for (var j = 0; j < arrows.length; j++) arrows[j].classList.add('hidden');
+    infoBox.classList.add('hidden');
+    counterEl.classList.add('hidden');
+  }
+  function resetTimer() {
+    showUI();
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(hideUI, 4000);
+  }
+
+  prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prevSlide(); });
+  nextBtn.addEventListener('click', function(e) { e.stopPropagation(); nextSlide(); });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') prevSlide();
+    else if (e.key === 'ArrowRight') nextSlide();
+  });
+
+  var tx = 0;
+  document.querySelector('.gallery-viewport').addEventListener('touchstart', function(e) {
+    tx = e.changedTouches[0].screenX;
+  }, { passive: true });
+  document.querySelector('.gallery-viewport').addEventListener('touchend', function(e) {
+    var diff = tx - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) nextSlide(); else prevSlide();
+    }
+  }, { passive: true });
+
+  document.addEventListener('mousemove', resetTimer);
+  document.addEventListener('touchstart', resetTimer, { passive: true });
+
+  show(0);
+  resetTimer();
+})();
+</script>
