@@ -3,15 +3,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="关于" description="关于海绵宝宝">
+  <div class="profile" style="border-bottom: none; margin-bottom: 1.5rem;">
+    <div class="profile-avatar">
+      <img
+        src="https://q1.qlogo.cn/g?b=qq&nk=310821993&s=640"
+        alt="头像"
+        loading="lazy"
+      />
+    </div>
+    <div class="profile-info">
+      <h1 class="profile-name">海绵宝宝 🧽</h1>
+      <p class="profile-sig">有梦想，就是牛逼</p>
+    </div>
+  </div>
+
   <article class="about">
-    <h1 class="about-title">关于</h1>
-
-    <p>你好，我是 <strong>海绵宝宝</strong>🧽</p>
-
-    <p>
-      这是我的个人博客，记录生活随笔、学习笔记和各种胡思乱想。
-    </p>
-
+    <p>你好，我是 <strong>海绵宝宝</strong>，这是我的个人博客。</p>
+    <p>这里记录生活随笔、学习笔记和各种胡思乱想。</p>
     <p>
       博客源码托管在 <a href="https://github.com/BobS4base/dreamnb" target="_blank" rel="noopener">GitHub</a>，
       通过 Cloudflare Pages 自动部署。
@@ -20,18 +28,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  .about {
-    max-width: 600px;
-  }
-
-  .about-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 1.5rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--color-text);
-  }
-
   .about p {
     margin: 0 0 1rem;
     line-height: 1.8;

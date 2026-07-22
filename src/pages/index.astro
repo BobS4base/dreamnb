@@ -4,13 +4,33 @@ import { getCollection } from 'astro:content';
 
 const blogPosts = await getCollection('blog');
 blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const postCount = blogPosts.length;
 ---
 
-<BaseLayout title="dreamnb" description="dreamnb 的个人博客">
-  <!-- ===== 博客文章 ===== -->
-  <h1 class="page-title">博客</h1>
+<BaseLayout title="home" description="dreamnb 的个人博客">
+  <!-- ===== QQ空间风格 — 个人简介 ===== -->
+  <div class="profile">
+    <div class="profile-avatar">
+      <img
+        src="https://q1.qlogo.cn/g?b=qq&nk=310821993&s=640"
+        alt="头像"
+        loading="lazy"
+      />
+    </div>
+    <div class="profile-info">
+      <h1 class="profile-name">dreamnb</h1>
+      <p class="profile-sig">有梦想，就是牛逼</p>
+    </div>
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <span class="profile-stat-num">{postCount}</span>
+        <span class="profile-stat-label">文章</span>
+      </div>
+    </div>
+  </div>
 
-  {blogPosts.length > 0 ? (
+  <!-- ===== 博客文章 ===== -->
+  {postCount > 0 ? (
     <div class="blog-list">
       {blogPosts.map(post => {
         const { title, pubDate } = post.data;
@@ -33,13 +53,11 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
   )}
 
   <!-- ===== 分隔线 ===== -->
-  <hr class="section-divider" />
+  <hr class="sec-divider" />
 
   <!-- ===== 留言板 ===== -->
-  <h2 class="page-title">留言板 💬</h2>
-  <p class="page-desc">欢迎留下你的想法，每条留言最多 20000 字。</p>
+  <h2 class="sec-title">留言板 💬</h2>
 
-  <!-- 留言表单 -->
   <form class="gb-form" id="guestbookForm">
     <div class="gb-field">
       <label for="gbName">昵称（可选）</label>
@@ -54,12 +72,10 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     <p class="gb-status" id="gbStatus"></p>
   </form>
 
-  <!-- 留言列表 -->
   <div id="messageList" class="gb-list">
     <p class="empty">加载中…</p>
   </div>
 
-  <!-- 加载更多 -->
   <div class="gb-loadmore" id="loadMoreWrap" style="display:none">
     <button id="loadMoreBtn" class="gb-loadmore-btn">加载更多</button>
   </div>
@@ -80,14 +96,12 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
   let totalMessages = 0;
   let isLoading = false;
 
-  // 字符计数
   contentInput.addEventListener('input', () => {
     const len = contentInput.value.length;
     charCounter.textContent = `${len} / 20000`;
     charCounter.style.color = len > 20000 ? '#e53e3e' : '#888';
   });
 
-  // 提交留言
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const content = contentInput.value.trim();
@@ -117,7 +131,6 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
         contentInput.value = '';
         nameInput.value = '';
         charCounter.textContent = '0 / 20000';
-        // 刷新留言列表
         currentPage = 1;
         loadMessages(true);
       } else {
@@ -133,7 +146,6 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     }
   });
 
-  // 加载留言
   async function loadMessages(reset = false) {
     if (isLoading) return;
     isLoading = true;
@@ -143,9 +155,7 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
       const data = await res.json();
       totalMessages = data.total || 0;
 
-      if (reset) {
-        messageList.innerHTML = '';
-      }
+      if (reset) messageList.innerHTML = '';
 
       if (data.messages && data.messages.length > 0) {
         data.messages.forEach((msg: any) => {
@@ -164,21 +174,16 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
         const loaded = reset ? data.messages.length : messageList.querySelectorAll('.gb-message').length;
         loadMoreWrap.style.display = loaded < totalMessages ? 'block' : 'none';
       } else {
-        if (reset) {
-          messageList.innerHTML = '<p class="empty">还没有留言，来写第一条吧！</p>';
-        }
+        if (reset) messageList.innerHTML = '<p class="empty">还没有留言，来写第一条吧！</p>';
         loadMoreWrap.style.display = 'none';
       }
     } catch {
-      if (reset) {
-        messageList.innerHTML = '<p class="empty">加载留言失败，请刷新页面重试</p>';
-      }
+      if (reset) messageList.innerHTML = '<p class="empty">加载留言失败，请刷新页面重试</p>';
     } finally {
       isLoading = false;
     }
   }
 
-  // 加载更多
   loadMoreBtn.addEventListener('click', () => {
     currentPage++;
     loadMessages();
@@ -190,25 +195,26 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     return div.innerHTML;
   }
 
-  // 初始加载
   loadMessages(true);
 </script>
 
 <style>
-  .section-divider {
+  .sec-divider {
     border: none;
     border-top: 2px solid var(--color-text);
     margin: 2.5rem 0;
   }
 
-  /* ===== 留言板表单 ===== */
-  .gb-form {
-    margin-bottom: 2rem;
+  .sec-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 1.25rem;
   }
 
-  .gb-field {
-    margin-bottom: 1rem;
-  }
+  /* ===== 留言板 ===== */
+  .gb-form { margin-bottom: 2rem; }
+
+  .gb-field { margin-bottom: 1rem; }
 
   .gb-field label {
     display: block;
@@ -218,9 +224,7 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     margin-bottom: 0.35rem;
   }
 
-  .gb-req {
-    color: #e53e3e;
-  }
+  .gb-req { color: #e53e3e; }
 
   .gb-field input,
   .gb-field textarea {
@@ -238,14 +242,9 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
   }
 
   .gb-field input:focus,
-  .gb-field textarea:focus {
-    border-color: var(--color-accent);
-  }
+  .gb-field textarea:focus { border-color: var(--color-accent); }
 
-  .gb-field textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
+  .gb-field textarea { resize: vertical; min-height: 80px; }
 
   .gb-counter {
     display: block;
@@ -267,26 +266,12 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     transition: background 0.2s;
   }
 
-  .gb-submit:hover {
-    background: var(--color-accent-hover);
-  }
+  .gb-submit:hover { background: var(--color-accent-hover); }
+  .gb-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  .gb-submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+  .gb-status { margin-top: 0.5rem; font-size: 0.85rem; }
 
-  .gb-status {
-    margin-top: 0.5rem;
-    font-size: 0.85rem;
-  }
-
-  /* ===== 留言列表 ===== */
-  .gb-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+  .gb-list { display: flex; flex-direction: column; gap: 1rem; }
 
   .gb-message {
     padding: 1rem 1.25rem;
@@ -304,16 +289,8 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     border-bottom: 1px solid var(--color-border);
   }
 
-  .gb-msg-name {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--color-accent);
-  }
-
-  .gb-msg-time {
-    font-size: 0.78rem;
-    color: var(--color-text-muted);
-  }
+  .gb-msg-name { font-weight: 600; font-size: 0.9rem; color: var(--color-accent); }
+  .gb-msg-time { font-size: 0.78rem; color: var(--color-text-muted); }
 
   .gb-msg-content {
     font-size: 0.92rem;
@@ -323,11 +300,7 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     white-space: pre-wrap;
   }
 
-  /* ===== 加载更多 ===== */
-  .gb-loadmore {
-    text-align: center;
-    margin-top: 1.5rem;
-  }
+  .gb-loadmore { text-align: center; margin-top: 1.5rem; }
 
   .gb-loadmore-btn {
     padding: 0.5rem 1.5rem;
@@ -340,8 +313,5 @@ blogPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
     transition: all 0.2s;
   }
 
-  .gb-loadmore-btn:hover {
-    background: var(--color-accent);
-    color: #fff;
-  }
+  .gb-loadmore-btn:hover { background: var(--color-accent); color: #fff; }
 </style>
