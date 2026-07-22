@@ -1,21 +1,52 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const videos = [
+  {
+    id: 'BV1rx411U7ux',
+    title: 'Alan Walker - Faded',
+    caption: 'Alan Walker - Faded (MV · 中英字幕)',
+  },
+  {
+    id: 'BV1rsRsByEdT',
+    title: '中东宝宝',
+    caption: '中东宝宝',
+  },
+];
 ---
 
 <BaseLayout title="视频欣赏">
   <div class="video-page">
     <h1 class="video-title">🎬 视频欣赏</h1>
-    <div class="video-wrapper">
-      <iframe
-        src="//player.bilibili.com/player.html?bvid=BV1rx411U7ux&page=1&autoplay=0&high_quality=1"
-        allowfullscreen="allowfullscreen"
-        width="100%"
-        height="100%"
-        frameborder="0"
-        sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts allow-popups"
-      ></iframe>
+    <div class="video-container" id="videoContainer">
+      <div class="video-viewport">
+        {videos.map((v, i) => (
+          <div class="video-slide" data-index={i}>
+            <div class="video-wrapper">
+              <iframe
+                src={"//player.bilibili.com/player.html?bvid=" + v.id + "&page=1&autoplay=0&high_quality=1"}
+                allowfullscreen="allowfullscreen"
+                width="100%"
+                height="100%"
+                frameborder="0"
+                sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts allow-popups"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              ></iframe>
+            </div>
+          </div>
+        ))}
+        <button class="video-arrow arrow-left" id="prevBtn" aria-label="上一个">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="video-arrow arrow-right" id="nextBtn" aria-label="下一个">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="video-counter" id="counter">1 / {videos.length}</div>
+      </div>
+      <div class="video-info" id="info">
+        <p class="video-caption" id="caption">{videos[0].caption}</p>
+      </div>
     </div>
-    <p class="video-caption">Alan Walker - Faded (MV · 中英字幕)</p>
   </div>
 </BaseLayout>
 
@@ -34,10 +65,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     text-align: center;
   }
 
+  .video-container {
+    position: relative;
+  }
+
+  .video-viewport {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .video-slide {
+    display: none;
+  }
+
+  .video-slide.active {
+    display: block;
+  }
+
   .video-wrapper {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%; /* 16:9 */
+    padding-bottom: 56.25%;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
@@ -52,10 +100,144 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border: none;
   }
 
-  .video-caption {
+  .video-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.4s ease, background 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .video-arrow.hidden { opacity: 0; pointer-events: none; }
+  .video-arrow:hover { background: var(--color-code-bg); }
+  .arrow-left { left: 10px; }
+  .arrow-right { right: 10px; }
+
+  .video-counter {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    background: var(--color-code-bg);
+    padding: 4px 14px;
+    border-radius: 20px;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  .video-counter.hidden { opacity: 0; }
+
+  .video-info {
+    padding: 16px 0 0;
     text-align: center;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  .video-info.hidden { opacity: 0; }
+
+  .video-caption {
     font-size: 0.9rem;
     color: var(--color-text-muted);
-    margin: 1rem 0 0;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .video-arrow { width: 42px; height: 42px; }
+    .video-arrow svg { width: 22px; height: 22px; }
+    .arrow-left { left: 4px; }
+    .arrow-right { right: 4px; }
+    .video-counter { bottom: 12px; }
   }
 </style>
+
+<script>
+(function() {
+  var slides = document.querySelectorAll('.video-slide');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var counter = document.getElementById('counter');
+  var caption = document.getElementById('caption');
+  var infoBox = document.querySelector('.video-info');
+  var counterEl = document.querySelector('.video-counter');
+
+  var captions = [
+    'Alan Walker - Faded (MV · 中英字幕)',
+    '中东宝宝',
+  ];
+
+  var cur = 0;
+  var timer = null;
+
+  function show(i) {
+    for (var j = 0; j < slides.length; j++) {
+      if (j === i) slides[j].classList.add('active');
+      else slides[j].classList.remove('active');
+    }
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    caption.textContent = captions[i];
+  }
+
+  function nextSlide() { cur = (cur + 1) % slides.length; show(cur); resetTimer(); }
+  function prevSlide() { cur = (cur - 1 + slides.length) % slides.length; show(cur); resetTimer(); }
+
+  function showUI() {
+    var arrows = document.querySelectorAll('.video-arrow');
+    for (var j = 0; j < arrows.length; j++) arrows[j].classList.remove('hidden');
+    infoBox.classList.remove('hidden');
+    counterEl.classList.remove('hidden');
+  }
+  function hideUI() {
+    var arrows = document.querySelectorAll('.video-arrow');
+    for (var j = 0; j < arrows.length; j++) arrows[j].classList.add('hidden');
+    infoBox.classList.add('hidden');
+    counterEl.classList.add('hidden');
+  }
+  function resetTimer() {
+    showUI();
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(hideUI, 4000);
+  }
+
+  prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prevSlide(); });
+  nextBtn.addEventListener('click', function(e) { e.stopPropagation(); nextSlide(); });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') prevSlide();
+    else if (e.key === 'ArrowRight') nextSlide();
+  });
+
+  var tx = 0;
+  document.querySelector('.video-viewport').addEventListener('touchstart', function(e) {
+    tx = e.changedTouches[0].screenX;
+  }, { passive: true });
+  document.querySelector('.video-viewport').addEventListener('touchend', function(e) {
+    var diff = tx - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) nextSlide(); else prevSlide();
+    }
+  }, { passive: true });
+
+  document.addEventListener('mousemove', resetTimer);
+  document.addEventListener('touchstart', resetTimer, { passive: true });
+
+  show(0);
+  resetTimer();
+})();
+</script>
