@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.DS_Store
+*.local
+.astro/
+5b1089a5-544e-50fb-b1f2-249564795187.pdf
+index.html

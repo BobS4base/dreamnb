@@ -1,0 +1,131 @@
+# Decap CMS 配置
+
+backend:
+  name: github
+  repo: 你的GitHub用户名/你的仓库名  # ⚠️ 改为你的 GitHub 仓库地址
+  branch: main
+  site_domain: dreamnb.com
+
+media_folder: public/uploads/images
+public_folder: /uploads/images
+
+collections:
+  - name: blog
+    label: 博客文章
+    label_singular: 文章
+    folder: src/content/blog
+    create: true
+    delete: true
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    slug: '{{fields.slug}}'
+    editor:
+      preview: true
+    fields:
+      - label: 标题
+        name: title
+        widget: string
+        required: true
+      - label: 描述
+        name: description
+        widget: text
+        required: true
+      - label: 发布日期
+        name: pubDate
+        widget: datetime
+        format: 'YYYY-MM-DD'
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+        required: true
+      - label: 更新日期
+        name: updatedDate
+        widget: datetime
+        format: 'YYYY-MM-DD'
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+        required: false
+      - label: 封面图片
+        name: coverImage
+        widget: image
+        required: false
+      - label: 标签
+        name: tags
+        widget: list
+        default: []
+        field:
+          label: 标签
+          name: tag
+          widget: string
+      - label: 精选
+        name: featured
+        widget: boolean
+        default: false
+        required: false
+      - label: 正文内容
+        name: body
+        widget: markdown
+        required: true
+
+  - name: portfolio
+    label: 作品集
+    label_singular: 作品
+    folder: src/content/portfolio
+    create: true
+    delete: true
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    slug: '{{fields.slug}}'
+    editor:
+      preview: true
+    fields:
+      - label: 标题
+        name: title
+        widget: string
+        required: true
+      - label: 描述
+        name: description
+        widget: text
+        required: true
+      - label: 发布日期
+        name: pubDate
+        widget: datetime
+        format: 'YYYY-MM-DD'
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+        required: true
+      - label: 封面图片
+        name: coverImage
+        widget: image
+        required: false
+      - label: 分类
+        name: category
+        widget: string
+        default: 其他
+        required: false
+      - label: 标签
+        name: tags
+        widget: list
+        default: []
+        field:
+          label: 标签
+          name: tag
+          widget: string
+      - label: 精选
+        name: featured
+        widget: boolean
+        default: false
+        required: false
+      - label: 在线链接
+        name: liveUrl
+        widget: string
+        required: false
+      - label: 源代码链接
+        name: repoUrl
+        widget: string
+        required: false
+      - label: 正文内容
+        name: body
+        widget: markdown
+        required: true

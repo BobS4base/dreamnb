@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="关于" description="关于 dreamnb">
+  <section class="about">
+    <h1 class="about-title">关于我</h1>
+
+    <div class="about-content">
+      <p>你好，我是 <strong>dreamnb</strong>。</p>
+
+      <p>这是一个用 <strong>Astro</strong> 构建的个人博客与作品集网站，部署在 <strong>Cloudflare Pages</strong> 上。</p>
+
+      <h2>关于这个网站</h2>
+      <ul>
+        <li>📝 <strong>博客</strong> — 记录生活随笔、技术笔记、读书感悟</li>
+        <li>🎨 <strong>作品集</strong> — 展示我的项目与创作</li>
+        <li>📹 视频使用 Bilibili 嵌入</li>
+        <li>🖼️ 图片通过 Cloudflare 或直接上传管理</li>
+      </ul>
+
+      <h2>联系方式</h2>
+      <p>欢迎通过以下方式联系我：</p>
+      <ul>
+        <li>GitHub: <a href="https://github.com" target="_blank" rel="noopener">github.com/dreamnb</a></li>
+        <li>Bilibili: <a href="https://bilibili.com" target="_blank" rel="noopener">bilibili.com/dreamnb</a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .about-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem;
+    color: var(--color-text);
+  }
+
+  .about-content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--color-text);
+  }
+
+  .about-content p {
+    margin: 0 0 1.25rem;
+  }
+
+  .about-content h2 {
+    font-size: 1.3rem;
+    margin: 2rem 0 0.75rem;
+    color: var(--color-text);
+  }
+
+  .about-content ul {
+    padding-left: 1.25rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .about-content li {
+    margin-bottom: 0.5rem;
+  }
+
+  .about-content a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .about-content a:hover {
+    text-decoration: underline;
+  }
+</style>

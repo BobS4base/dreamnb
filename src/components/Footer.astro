@@ -1,0 +1,57 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="copyright">&copy; {year} dreamnb. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="/rss.xml" target="_blank" class="footer-link">RSS</a>
+      <a href="https://github.com" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-border);
+    padding: 1.5rem;
+    margin-top: auto;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 960px;
+    margin: 0 auto;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .copyright {
+    margin: 0;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .footer-link:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 480px) {
+    .footer-inner {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+  }
+</style>
