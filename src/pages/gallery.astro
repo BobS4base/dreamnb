@@ -63,9 +63,9 @@ const paintings = files.map((f, i) => {
   const displayName = nameNoExt.replace(/^0+/, '');
   return {
     id: i + 1,
-    title: 'Artwork #' + displayName,
-    titleCn: '作品 #' + displayName,
-    artist: 'Unknown',
+    title: 'Untitled #' + displayName,
+    titleCn: '',
+    artist: '',
     year: '',
     location: '',
     image: '/uploads/images/gallery/' + f,
@@ -74,7 +74,7 @@ const paintings = files.map((f, i) => {
 
 // 在 frontmatter 中预生成 JSON，避免模板表达式解析问题
 const paintingsJson = JSON.stringify(paintings.map(p => ({
-  title: p.title + ' · ' + p.titleCn,
+  title: p.titleCn ? (p.title + ' · ' + p.titleCn) : p.title,
   artist: p.artist,
   year: p.year,
   location: p.location,
