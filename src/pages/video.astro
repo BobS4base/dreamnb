@@ -185,8 +185,6 @@ const videos = [
   var nextBtn = document.getElementById('nextBtn');
   var counter = document.getElementById('counter');
   var caption = document.getElementById('caption');
-  var infoBox = document.querySelector('.video-info');
-  var counterEl = document.querySelector('.video-counter');
 
   var captions = [
     'Alan Walker - Faded (MV · 中英字幕)',
@@ -194,7 +192,6 @@ const videos = [
   ];
 
   var cur = 0;
-  var timer = null;
 
   // 保存每个 iframe 的原始 src
   var iframes = [];
@@ -220,26 +217,8 @@ const videos = [
     caption.textContent = captions[i];
   }
 
-  function nextSlide() { cur = (cur + 1) % slides.length; show(cur); resetTimer(); }
-  function prevSlide() { cur = (cur - 1 + slides.length) % slides.length; show(cur); resetTimer(); }
-
-  function showUI() {
-    var arrows = document.querySelectorAll('.video-arrow');
-    for (var j = 0; j < arrows.length; j++) arrows[j].classList.remove('hidden');
-    infoBox.classList.remove('hidden');
-    counterEl.classList.remove('hidden');
-  }
-  function hideUI() {
-    var arrows = document.querySelectorAll('.video-arrow');
-    for (var j = 0; j < arrows.length; j++) arrows[j].classList.add('hidden');
-    infoBox.classList.add('hidden');
-    counterEl.classList.add('hidden');
-  }
-  function resetTimer() {
-    showUI();
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(hideUI, 4000);
-  }
+  function nextSlide() { cur = (cur + 1) % slides.length; show(cur); }
+  function prevSlide() { cur = (cur - 1 + slides.length) % slides.length; show(cur); }
 
   prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prevSlide(); });
   nextBtn.addEventListener('click', function(e) { e.stopPropagation(); nextSlide(); });
@@ -260,10 +239,6 @@ const videos = [
     }
   }, { passive: true });
 
-  document.addEventListener('mousemove', resetTimer);
-  document.addEventListener('touchstart', resetTimer, { passive: true });
-
   show(0);
-  resetTimer();
 })();
 </script>
