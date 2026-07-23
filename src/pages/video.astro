@@ -185,6 +185,9 @@ const videos = [
   var nextBtn = document.getElementById('nextBtn');
   var counter = document.getElementById('counter');
   var caption = document.getElementById('caption');
+  var viewport = document.querySelector('.video-viewport');
+  var infoBox = document.querySelector('.video-info');
+  var counterEl = document.querySelector('.video-counter');
 
   var captions = [
     'Alan Walker - Faded (MV · 中英字幕)',
@@ -192,6 +195,7 @@ const videos = [
   ];
 
   var cur = 0;
+  var hideTimer = null;
 
   // 保存每个 iframe 的原始 src
   var iframes = [];
@@ -217,8 +221,33 @@ const videos = [
     caption.textContent = captions[i];
   }
 
-  function nextSlide() { cur = (cur + 1) % slides.length; show(cur); }
-  function prevSlide() { cur = (cur - 1 + slides.length) % slides.length; show(cur); }
+  function showUI() {
+    document.querySelectorAll('.video-arrow').forEach(function(el) { el.classList.remove('hidden'); });
+    infoBox.classList.remove('hidden');
+    counterEl.classList.remove('hidden');
+  }
+
+  function hideUI() {
+    document.querySelectorAll('.video-arrow').forEach(function(el) { el.classList.add('hidden'); });
+    infoBox.classList.add('hidden');
+    counterEl.classList.add('hidden');
+  }
+
+  function resetHideTimer() {
+    showUI();
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = setTimeout(hideUI, 4000);
+  }
+
+  function onEnter() { resetHideTimer(); }
+  function onLeave() {
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = null;
+    hideUI();
+  }
+
+  function nextSlide() { cur = (cur + 1) % slides.length; show(cur); resetHideTimer(); }
+  function prevSlide() { cur = (cur - 1 + slides.length) % slides.length; show(cur); resetHideTimer(); }
 
   prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prevSlide(); });
   nextBtn.addEventListener('click', function(e) { e.stopPropagation(); nextSlide(); });
@@ -228,11 +257,18 @@ const videos = [
     else if (e.key === 'ArrowRight') nextSlide();
   });
 
+  // 鼠标进入视频区域 → 显示箭头 + 启动自动隐藏计时
+  viewport.addEventListener('mouseenter', onEnter);
+  // 鼠标离开视频区域 → 立即隐藏
+  viewport.addEventListener('mouseleave', onLeave);
+
+  // 触摸滑动
   var tx = 0;
-  document.querySelector('.video-viewport').addEventListener('touchstart', function(e) {
+  viewport.addEventListener('touchstart', function(e) {
     tx = e.changedTouches[0].screenX;
+    onEnter();
   }, { passive: true });
-  document.querySelector('.video-viewport').addEventListener('touchend', function(e) {
+  viewport.addEventListener('touchend', function(e) {
     var diff = tx - e.changedTouches[0].screenX;
     if (Math.abs(diff) > 50) {
       if (diff > 0) nextSlide(); else prevSlide();
@@ -240,5 +276,8 @@ const videos = [
   }, { passive: true });
 
   show(0);
+  // 初始状态：显示箭头，4秒后自动隐藏
+  showUI();
+  hideTimer = setTimeout(hideUI, 4000);
 })();
 </script>

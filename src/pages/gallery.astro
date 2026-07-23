@@ -4,35 +4,35 @@ import fs from 'fs';
 import path from 'path';
 
 const namedPaintings = {
-  '01-persistence-of-memory.jpg': {
+  '01-persistence-of-memory.webp': {
     title: 'The Persistence of Memory',
     titleCn: '记忆的永恒',
-    artist: 'Salvador Dalí',
+    artist: 'Salvador Dali',
     year: '1931',
     location: 'Museum of Modern Art (MoMA), New York',
   },
-  '02-son-of-man.jpg': {
+  '02-son-of-man.webp': {
     title: 'The Son of Man',
     titleCn: '人类之子',
-    artist: 'René Magritte',
+    artist: 'Rene Magritte',
     year: '1964',
     location: 'Private Collection',
   },
   '03-golconda.jpg': {
     title: 'Golconda',
     titleCn: '戈尔康达',
-    artist: 'René Magritte',
+    artist: 'Rene Magritte',
     year: '1953',
     location: 'Menil Collection, Houston',
   },
-  '04-swans-reflecting-elephants.jpg': {
+  '04-swans-reflecting-elephants.webp': {
     title: 'Swans Reflecting Elephants',
-    titleCn: '天鵜映象',
-    artist: 'Salvador Dalí',
+    titleCn: '天鹅映象',
+    artist: 'Salvador Dali',
     year: '1937',
     location: 'Private Collection',
   },
-  '05-i-and-the-village.jpg': {
+  '05-i-and-the-village.webp': {
     title: 'I and the Village',
     titleCn: '我与村庄',
     artist: 'Marc Chagall',
@@ -83,7 +83,6 @@ const paintings = files.map((f, i) => {
               src={p.image}
               alt={p.title}
               loading={i === 0 ? 'eager' : 'lazy'}
-              onerror="this.onerror=null; this.parentElement.classList.add('broken'); this.parentElement.innerHTML='<div class=\"img-fallback\">\u274c \u52a0\u8f7d\u5931\u8d25</div>';"
             />
           </div>
         ))}
@@ -102,7 +101,7 @@ const paintings = files.map((f, i) => {
 
       <div class="gallery-info" id="info">
         <h2 class="info-title" id="infoTitle">{paintings[0].title}</h2>
-        <p class="info-detail" id="infoDetail">{paintings[0].artist}{paintings[0].year ? (' \u00b7 ' + paintings[0].year) : ''}</p>
+        <p class="info-detail" id="infoDetail">{paintings[0].artist}{paintings[0].year ? (' &middot; ' + paintings[0].year) : ''}</p>
         <p class="info-location" id="infoLocation">{paintings[0].location}</p>
       </div>
     </div>
@@ -278,6 +277,16 @@ const paintings = files.map((f, i) => {
     preloadImage(paintings[(index + 1) % n].image);
   }
 
+  function handleImgError(img) {
+    if (img.dataset.broken) return;
+    img.dataset.broken = '1';
+    img.style.display = 'none';
+    var fallback = document.createElement('div');
+    fallback.className = 'img-fallback';
+    fallback.textContent = '\u274c \u52a0\u8f7d\u5931\u8d25';
+    img.parentElement.appendChild(fallback);
+  }
+
   function showSlide(index) {
     slides.forEach((s, i) => s.classList.toggle('active', i === index));
     counter.textContent = (index + 1) + ' / ' + paintings.length;
@@ -341,6 +350,16 @@ const paintings = files.map((f, i) => {
 
   document.addEventListener('mousemove', onUserActivity);
   document.addEventListener('touchstart', onUserActivity, { passive: true });
+
+  slides.forEach(function(slide) {
+    var img = slide.querySelector('img');
+    if (img) {
+      img.addEventListener('error', function() { handleImgError(this); });
+      if (img.complete && (img.naturalWidth === 0 || img.naturalHeight === 0)) {
+        handleImgError(img);
+      }
+    }
+  });
 
   showSlide(0);
   resetHideTimer();
