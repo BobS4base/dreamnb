@@ -329,3 +329,16 @@
 - 重新加入 4 秒自动隐藏，鼠标进入视频区域重新显示
 - 改用 `mouseenter`/`mouseleave` 解决 B站 iframe 捕获事件导致箭头永久消失的 bug
 - 触摸屏幕/点击箭头/键盘切换均重置隐藏计时
+
+---
+
+## 2026-07-24 代码全面审查修复3个BUG
+
+### 发现的3个BUG
+1. **CRITICAL — `img-fallback` CSS 作用域问题**：Astro 的 CSS 自动添加 `[data-astro-cid-*]` 作用域属性，JS 运行时创建的 `<div>` 没有该属性，加载失败的占位提示无样式 → 改为内联样式
+2. **CRITICAL — `paintings-data` JSON 被 HTML 转义**：Astro 模板默认将 `{paintingsJson}` 中的 `"` 转成 `&quot;`，导致 `JSON.parse` 崩溃 → 改用 `<script set:html>` 原始输出
+3. **MINOR — 不存在的 sitemap 链接**：`BaseLayout.astro` 中 `<link rel="sitemap" href="/sitemap-index.xml">` 指向不存在的文件 → 删除
+
+### 修复文件
+- `src/pages/gallery.astro` — 内联样式替代 scoped class；`set:html` 指令输出 JSON
+- `src/layouts/BaseLayout.astro` — 移除 sitemap 链接

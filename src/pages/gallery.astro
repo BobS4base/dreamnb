@@ -110,8 +110,9 @@ const paintingsJson = JSON.stringify(paintings.map(p => ({
 
       <div class="gallery-info" id="info">
         <h2 class="info-title" id="infoTitle">{paintings[0].title}</h2>
-        <p class="info-detail" id="infoDetail">{paintings[0].artist}{paintings[0].year ? (' &middot; ' + paintings[0].year) : ''}</p>
+        <p class="info-detail" id="infoDetail">{paintings[0].artist != 'Unknown' ? paintings[0].artist + (paintings[0].year ? (' &middot; ' + paintings[0].year) : '') : ''}</p>
         <p class="info-location" id="infoLocation">{paintings[0].location}</p>
+        <p class="gallery-copyright">&copy; 2026 SpongeBob All Rights Reserved</p>
       </div>
       <script id="paintings-data" type="application/json" set:html={paintingsJson}></script>
     </div>
@@ -242,6 +243,12 @@ const paintingsJson = JSON.stringify(paintings.map(p => ({
   }
   .info-detail { font-size: 0.9rem; color: #aaa; margin: 0 0 2px; }
   .info-location { font-size: 0.8rem; color: #777; margin: 0; }
+  .gallery-copyright {
+    font-size: 0.65rem;
+    color: #555;
+    margin: 10px 0 0;
+    opacity: 0.6;
+  }
 
   @media (max-width: 768px) {
     .gallery-arrow { width: 42px; height: 42px; }
@@ -303,7 +310,7 @@ const paintingsJson = JSON.stringify(paintings.map(p => ({
     slides.forEach((s, i) => s.classList.toggle('active', i === index));
     counter.textContent = (index + 1) + ' / ' + paintings.length;
     infoTitle.textContent = paintings[index].title;
-    infoDetail.innerHTML = paintings[index].artist + (paintings[index].year ? (' \u00b7 ' + paintings[index].year) : '');
+    infoDetail.innerHTML = paintings[index].artist ? (paintings[index].artist !== 'Unknown' ? paintings[index].artist + (paintings[index].year ? (' \u00b7 ' + paintings[index].year) : '') : '') : '';
     infoLocation.textContent = paintings[index].location;
     preloadAdjacent(index);
   }
