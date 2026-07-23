@@ -71,6 +71,15 @@ const paintings = files.map((f, i) => {
     image: '/uploads/images/gallery/' + f,
   };
 });
+
+// 在 frontmatter 中预生成 JSON，避免模板表达式解析问题
+const paintingsJson = JSON.stringify(paintings.map(p => ({
+  title: p.title + ' · ' + p.titleCn,
+  artist: p.artist,
+  year: p.year,
+  location: p.location,
+  image: p.image,
+})));
 ---
 
 <BaseLayout title="作品欣赏">
@@ -257,6 +266,7 @@ const paintings = files.map((f, i) => {
   const counterEl = document.querySelector('.gallery-counter');
   const viewport = document.getElementById('viewport');
 
+  // 从隐藏 div 读取画作数据
   const paintings = JSON.parse(document.getElementById('paintings-data').textContent);
 
   let current = 0;
@@ -366,10 +376,5 @@ const paintings = files.map((f, i) => {
 })();
 </script>
 
-<script id="paintings-data" type="application/json">{JSON.stringify(paintings.map(p => ({
-  title: p.title + ' \u00b7 ' + p.titleCn,
-  artist: p.artist,
-  year: p.year,
-  location: p.location,
-  image: p.image
-})))}</script>
+<div id="paintings-data" style="display:none">{paintingsJson}</div>
+
