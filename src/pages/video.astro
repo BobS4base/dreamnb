@@ -121,7 +121,6 @@ const videos = [
     transition: opacity 0.4s ease, background 0.2s ease;
   }
 
-  .video-arrow.hidden { opacity: 0; pointer-events: none; }
   .video-arrow:hover { background: var(--color-code-bg); }
   .arrow-left { left: 10px; }
   .arrow-right { right: 10px; }
@@ -144,16 +143,12 @@ const videos = [
     transition: opacity 0.4s ease;
   }
 
-  .video-counter.hidden { opacity: 0; }
-
   .video-info {
     padding: 16px 0 0;
     text-align: center;
     opacity: 1;
     transition: opacity 0.4s ease;
   }
-
-  .video-info.hidden { opacity: 0; }
 
   .video-caption {
     font-size: 0.9rem;
@@ -186,8 +181,6 @@ const videos = [
   var counter = document.getElementById('counter');
   var caption = document.getElementById('caption');
   var viewport = document.querySelector('.video-viewport');
-  var infoBox = document.querySelector('.video-info');
-  var counterEl = document.querySelector('.video-counter');
 
   var captions = [
     'Alan Walker - Faded (MV · 中英字幕)',
@@ -195,7 +188,6 @@ const videos = [
   ];
 
   var cur = 0;
-  var hideTimer = null;
 
   // 保存每个 iframe 的原始 src
   var iframes = [];
@@ -221,33 +213,8 @@ const videos = [
     caption.textContent = captions[i];
   }
 
-  function showUI() {
-    document.querySelectorAll('.video-arrow').forEach(function(el) { el.classList.remove('hidden'); });
-    infoBox.classList.remove('hidden');
-    counterEl.classList.remove('hidden');
-  }
-
-  function hideUI() {
-    document.querySelectorAll('.video-arrow').forEach(function(el) { el.classList.add('hidden'); });
-    infoBox.classList.add('hidden');
-    counterEl.classList.add('hidden');
-  }
-
-  function resetHideTimer() {
-    showUI();
-    if (hideTimer) clearTimeout(hideTimer);
-    hideTimer = setTimeout(hideUI, 4000);
-  }
-
-  function onEnter() { resetHideTimer(); }
-  function onLeave() {
-    if (hideTimer) clearTimeout(hideTimer);
-    hideTimer = null;
-    hideUI();
-  }
-
-  function nextSlide() { cur = (cur + 1) % slides.length; show(cur); resetHideTimer(); }
-  function prevSlide() { cur = (cur - 1 + slides.length) % slides.length; show(cur); resetHideTimer(); }
+  function nextSlide() { cur = (cur + 1) % slides.length; show(cur); }
+  function prevSlide() { cur = (cur - 1 + slides.length) % slides.length; show(cur); }
 
   prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prevSlide(); });
   nextBtn.addEventListener('click', function(e) { e.stopPropagation(); nextSlide(); });
@@ -257,16 +224,10 @@ const videos = [
     else if (e.key === 'ArrowRight') nextSlide();
   });
 
-  // 鼠标进入视频区域 → 显示箭头 + 启动自动隐藏计时
-  viewport.addEventListener('mouseenter', onEnter);
-  // 鼠标离开视频区域 → 立即隐藏
-  viewport.addEventListener('mouseleave', onLeave);
-
   // 触摸滑动
   var tx = 0;
   viewport.addEventListener('touchstart', function(e) {
     tx = e.changedTouches[0].screenX;
-    onEnter();
   }, { passive: true });
   viewport.addEventListener('touchend', function(e) {
     var diff = tx - e.changedTouches[0].screenX;
@@ -276,8 +237,5 @@ const videos = [
   }, { passive: true });
 
   show(0);
-  // 初始状态：显示箭头，4秒后自动隐藏
-  showUI();
-  hideTimer = setTimeout(hideUI, 4000);
 })();
 </script>
